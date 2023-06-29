@@ -31,6 +31,9 @@ public class LogInPage  extends PageBase {
     @FindBy(xpath="//button[text()='Sign In']")
     public WebElement signInButton;
 
+    @FindBy(xpath="//div[@id='error_explanation']/span")
+    public WebElement errorMessageLabel;
+
     /** Public Methods  **/
 
     public WebDriver getDriver() {

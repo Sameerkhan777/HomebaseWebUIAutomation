@@ -33,25 +33,46 @@ public class SearchStepDfn {
 		ObjectRepo.data.put("HomePage", hPage);
 	}
 
-	@When("User enters username in Username field")
-	public void userEntersUsernameInUsernameField() {
+	@When("User enters {string} username in Username field")
+	public void userEntersUsernameInUsernameField(String userNameType) {
 		logInPage = new LogInPage(ObjectRepo.driver);
 		logInPage.waitForUsernameTextBox();
 		ObjectRepo.data.put("LoginPage", logInPage);
-		logInPage.usernameTxt.sendKeys(ObjectRepo.reader.getUserName());
+		if(userNameType.equalsIgnoreCase("valid")) {
+			logInPage.usernameTxt.sendKeys(ObjectRepo.reader.getUserName());
+		}
+		else{
+			logInPage.usernameTxt.sendKeys("invalidusername@email.com");
+		}
 	}
 
-	@And("User enters password in password field")
-	public void userEntersPasswordInPasswordField() throws InterruptedException {
-		Thread.sleep(5000);
-		logInPage.passwordTxt.sendKeys(ObjectRepo.reader.getPassword());
-	}
-
-	@Then("user click on sign In Page button")
-	public void userClickOnSignInPage() throws InterruptedException {
+	@And("User enters {string} password in password field")
+	public void userEntersPasswordInPasswordField(String passType) throws InterruptedException {
 		Thread.sleep(2000);
-		logInPage.signInButton.click();;
-		Thread.sleep(15000);
+		if(passType.equalsIgnoreCase("valid")) {
+			logInPage.passwordTxt.sendKeys(ObjectRepo.reader.getPassword());
+		}else{
+			logInPage.passwordTxt.sendKeys("password");
+		}
+
+	}
+
+	@Then("user click on sign In Page button for {string} credentials")
+	public void userClickOnSignInPage(String credentialsType) throws InterruptedException {
+		Thread.sleep(2000);
+		logInPage.signInButton.click();
+		if(credentialsType.equalsIgnoreCase("valid")) {
+			Thread.sleep(10000);
+		}
+		else{
+			Thread.sleep(3000);
+		}
+
+	}
+
+	@Then("User validates error message for invalid credentials")
+	public void userVerifyErrorMessageForInvalidCredentialsOnSignInPage()  {
+		Assert.assertTrue(logInPage.errorMessageLabel.getText().contains("Invalid email or password. Click"));
 	}
 
 

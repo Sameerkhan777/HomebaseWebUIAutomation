@@ -10,3 +10,5 @@
 
 # IDEA config files
 .idea/
+
+target/

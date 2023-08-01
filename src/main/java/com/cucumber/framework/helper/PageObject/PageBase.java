@@ -3,6 +3,7 @@ package com.cucumber.framework.helper.PageObject;
 
 import com.cucumber.framework.helper.Logger.LoggerHelper;
 import com.google.common.base.Function;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.slf4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
@@ -91,5 +92,11 @@ public abstract class PageBase{
 			throw new IllegalArgumentException(title);
 		return driver.getTitle().trim().contains(title);
 	}
+
+	public void waitForPageLoad(){
+		new WebDriverWait(driver, Duration.ofSeconds(30)).until((ExpectedCondition<Boolean>) wd ->
+				((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
+	}
+
 	
 }
